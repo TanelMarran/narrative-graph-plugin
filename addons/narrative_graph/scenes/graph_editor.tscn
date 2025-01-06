@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dccks8lhf3j6q"]
+
+[ext_resource type="Script" path="res://addons/narrative_graph/narrative_graph_graph_edit.gd" id="1_c6nju"]
+[ext_resource type="Script" path="res://addons/narrative_graph/narrative_player.gd" id="2_ratw6"]
+
+[node name="Control" type="GraphEdit"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+right_disconnects = true
+script = ExtResource("1_c6nju")
+
+[node name="NarrativePlayer" type="Node" parent="."]
+script = ExtResource("2_ratw6")
+test = null
