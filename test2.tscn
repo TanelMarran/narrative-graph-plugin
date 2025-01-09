@@ -44,20 +44,20 @@ nodes = {
 [sub_resource type="Resource" id="Resource_s78mq"]
 script = ExtResource("3_iu6uv")
 name = ""
-position = Vector2(-180, -40)
+position = Vector2(-40, -140)
 requires = Array[String]([])
 opens = Array[String](["1"])
 
 [sub_resource type="Resource" id="Resource_3r62e"]
 script = ExtResource("3_iu6uv")
 name = ""
-position = Vector2(160, -20)
+position = Vector2(160, -140)
 requires = Array[String](["2", "0"])
 opens = Array[String]([])
 
 [sub_resource type="Resource" id="Resource_exgg5"]
 script = ExtResource("4_q56is")
-position = Vector2(-80, 60)
+position = Vector2(-40, 0)
 requires = Array[String]([])
 opens = Array[String](["1"])
 

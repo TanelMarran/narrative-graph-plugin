@@ -66,7 +66,7 @@ func remove_connection(from: String, to: String) -> void:
 	
 	get_node(from).opens.erase(to)
 	get_node(to).requires.erase(from)
-	connection_added.emit(from, to)
+	connection_removed.emit(from, to)
 
 func move_node(node: String, position: Vector2) -> void:
 	get_node(node).position = position

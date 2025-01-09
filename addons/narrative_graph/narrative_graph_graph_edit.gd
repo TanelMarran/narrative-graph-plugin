@@ -16,9 +16,12 @@ var selected_nodes: Array[Node] = []
 
 @onready var add_dialogue_button: Button = %AddDialogueButton
 @onready var add_requirement_button: Button = %AddRequirementButton
+@onready var arrange_nodes_button: Button = %ArrangeNodesButton
 @onready var graph_edit: GraphEdit = %GraphEdit
 
 func _ready():
+	graph_edit.show_arrange_button = false
+	
 	graph_edit.delete_nodes_request.connect(_on_delete_nodes_request)
 	
 	graph_edit.end_node_move.connect(_on_end_node_move)
@@ -31,6 +34,7 @@ func _ready():
 	
 	add_dialogue_button.pressed.connect(_on_add_dialogue_button_pressed)
 	add_requirement_button.pressed.connect(_on_add_requirement_button_pressed)
+	arrange_nodes_button.pressed.connect(_on_arrange_nodes_button_pressed)
 
 func set_narrative_graph(new_graph: NarrativeGraph) -> void:
 	var is_new_graph: bool = new_graph != graph
@@ -113,7 +117,7 @@ func _on_delete_nodes_request(names: Array[StringName]) -> void:
 		action_remove_node('Remove node', node_key, UndoRedo.MERGE_ALL)
 	
 func _on_end_node_move() -> void:
-	for node in selected_nodes:
+	for node in (selected_nodes if selected_nodes.size() > 0 else graph_nodes.values()):
 		if node is NarrativeGraphNodeControl:
 			undo_redo.create_action('Node moved', UndoRedo.MERGE_ALL)
 			undo_redo.add_do_method(graph, "move_node", node.name, node.position_offset)
@@ -125,6 +129,10 @@ func _on_add_dialogue_button_pressed() -> void:
 	
 func _on_add_requirement_button_pressed() -> void:
 	action_add_requirement('Add node')
+	
+func _on_arrange_nodes_button_pressed() -> void:
+	graph_edit.arrange_nodes()
+	_on_end_node_move()
 	
 func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int):
 	action_add_connection('Add connection', from_node, to_node)
