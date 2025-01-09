@@ -1,0 +1,48 @@
+[gd_scene load_steps=10 format=3 uid="uid://buxcmq4pfvdp3"]
+
+[ext_resource type="Script" path="res://addons/narrative_graph/narrative_player.gd" id="1_4f00q"]
+[ext_resource type="Script" path="res://addons/narrative_graph/resources/narrative_graph_dialogue_node.gd" id="2_krqhh"]
+[ext_resource type="Script" path="res://addons/narrative_graph/resources/narrative_graph.gd" id="2_qgm0t"]
+[ext_resource type="Script" path="res://addons/narrative_graph/resources/narrative_graph_node.gd" id="3_kbvnm"]
+
+[sub_resource type="Resource" id="Resource_54tjd"]
+script = ExtResource("2_krqhh")
+name = ""
+position = Vector2(260, -80)
+requires = Array[String](["1"])
+opens = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_np15t"]
+script = ExtResource("2_krqhh")
+name = ""
+position = Vector2(140, -20)
+requires = Array[String](["2", "4"])
+opens = Array[String](["0"])
+
+[sub_resource type="Resource" id="Resource_6xpn3"]
+script = ExtResource("2_krqhh")
+name = ""
+position = Vector2(-40, -20)
+requires = Array[String]([])
+opens = Array[String](["1"])
+
+[sub_resource type="Resource" id="Resource_14vp8"]
+script = ExtResource("3_kbvnm")
+position = Vector2(-60, 120)
+requires = Array[String]([])
+opens = Array[String](["1"])
+
+[sub_resource type="Resource" id="Resource_rtqtq"]
+script = ExtResource("2_qgm0t")
+nodes = {
+"0": SubResource("Resource_54tjd"),
+"1": SubResource("Resource_np15t"),
+"2": SubResource("Resource_6xpn3"),
+"4": SubResource("Resource_14vp8")
+}
+
+[node name="Test" type="Node"]
+script = ExtResource("1_4f00q")
+graph = SubResource("Resource_rtqtq")
+
+[node name="Node2D" type="Node2D" parent="."]

@@ -1,22 +1,30 @@
-[gd_scene format=3 uid="uid://qquwv8jl2obq"]
+[gd_scene load_steps=4 format=3 uid="uid://qquwv8jl2obq"]
+
+[ext_resource type="StyleBox" uid="uid://caffi32ml86r8" path="res://addons/narrative_graph/styles/style_dialogue_titlebar.tres" id="1_m83ed"]
+[ext_resource type="Script" path="res://addons/narrative_graph/scripts/narrative_graph_node_control.gd" id="2_b3sb6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g6dkc"]
+content_margin_left = 4.0
+content_margin_top = 8.0
+content_margin_right = 4.0
+content_margin_bottom = 8.0
+bg_color = Color(0.0980392, 0.113725, 0.137255, 1)
 
 [node name="GraphNode" type="GraphNode"]
-offset_left = 236.0
-offset_top = 104.0
-offset_right = 409.0
-offset_bottom = 190.0
 mouse_filter = 1
-position_offset = Vector2(236, 104)
-title = "testing"
+theme_override_styles/panel = SubResource("StyleBoxFlat_g6dkc")
+theme_override_styles/titlebar = ExtResource("1_m83ed")
+title = "Dialogue ID"
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
 slot/0/left_icon = null
 slot/0/right_enabled = true
 slot/0/right_type = 0
-slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_color = Color(0.25098, 0.529412, 0.67451, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
+script = ExtResource("2_b3sb6")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 2

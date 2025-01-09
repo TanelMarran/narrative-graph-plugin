@@ -1,0 +1,80 @@
+[gd_scene load_steps=14 format=3 uid="uid://mbnoea3p2utp"]
+
+[ext_resource type="Script" path="res://addons/narrative_graph/narrative_player.gd" id="1_6aii4"]
+[ext_resource type="Script" path="res://addons/narrative_graph/resources/narrative_graph.gd" id="2_4xicp"]
+[ext_resource type="Script" path="res://addons/narrative_graph/resources/narrative_graph_dialogue_node.gd" id="3_iu6uv"]
+[ext_resource type="Script" path="res://addons/narrative_graph/resources/narrative_graph_node.gd" id="4_q56is"]
+
+[sub_resource type="Resource" id="Resource_dcxtt"]
+script = ExtResource("3_iu6uv")
+name = ""
+position = Vector2(80, -80)
+requires = Array[String]([])
+opens = Array[String](["1", "2"])
+
+[sub_resource type="Resource" id="Resource_cfqvc"]
+script = ExtResource("3_iu6uv")
+name = ""
+position = Vector2(380, 0)
+requires = Array[String](["3", "0"])
+opens = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_51vk4"]
+script = ExtResource("3_iu6uv")
+name = ""
+position = Vector2(280, -80)
+requires = Array[String](["0"])
+opens = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_rets5"]
+script = ExtResource("4_q56is")
+position = Vector2(80, 0)
+requires = Array[String]([])
+opens = Array[String](["1"])
+
+[sub_resource type="Resource" id="Resource_r4iiy"]
+script = ExtResource("2_4xicp")
+nodes = {
+"0": SubResource("Resource_dcxtt"),
+"1": SubResource("Resource_cfqvc"),
+"2": SubResource("Resource_51vk4"),
+"3": SubResource("Resource_rets5")
+}
+
+[sub_resource type="Resource" id="Resource_s78mq"]
+script = ExtResource("3_iu6uv")
+name = ""
+position = Vector2(-180, -40)
+requires = Array[String]([])
+opens = Array[String](["1"])
+
+[sub_resource type="Resource" id="Resource_3r62e"]
+script = ExtResource("3_iu6uv")
+name = ""
+position = Vector2(160, -20)
+requires = Array[String](["2", "0"])
+opens = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_exgg5"]
+script = ExtResource("4_q56is")
+position = Vector2(-80, 60)
+requires = Array[String]([])
+opens = Array[String](["1"])
+
+[sub_resource type="Resource" id="Resource_qe4bl"]
+script = ExtResource("2_4xicp")
+nodes = {
+"0": SubResource("Resource_s78mq"),
+"1": SubResource("Resource_3r62e"),
+"2": SubResource("Resource_exgg5")
+}
+
+[node name="Test2" type="Node2D"]
+
+[node name="NarrativePlayer" type="Node" parent="."]
+script = ExtResource("1_6aii4")
+graph = SubResource("Resource_r4iiy")
+
+[node name="NarrativePlayer2" type="Node" parent="."]
+script = ExtResource("1_6aii4")
+graph = SubResource("Resource_qe4bl")
