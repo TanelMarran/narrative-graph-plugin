@@ -43,4 +43,6 @@ text = "Arrange Nodes"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+grid_pattern = 1
 right_disconnects = true
+show_arrange_button = false

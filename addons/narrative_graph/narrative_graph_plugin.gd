@@ -1,6 +1,8 @@
 @tool
 class_name NarrativeGraphPlugin extends EditorPlugin
 
+var narrative_graph_node_editor_plugin: NarrativeGraphNodeInspectorPlugin
+
 var narrative_graph_edit: NarrativeGraphEdit
 var narrative_player: NarrativePlayer
 var undo_redo: EditorUndoRedoManager
@@ -10,6 +12,7 @@ var narrative_graph_offset: Vector2
 
 func _enter_tree():
 	undo_redo = get_undo_redo()
+	
 	narrative_graph_edit = preload("res://addons/narrative_graph/scenes/graph_editor.tscn").instantiate() as NarrativeGraphEdit
 	narrative_graph_edit.ready.connect(func():
 		narrative_graph_edit.graph_edit.zoom = narrative_graph_zoom
@@ -20,19 +23,23 @@ func _enter_tree():
 	)
 	narrative_graph_edit.plugin = self
 	narrative_graph_edit.undo_redo = undo_redo
+	
+	narrative_graph_node_editor_plugin = preload("res://addons/narrative_graph/inspector_plugins/narrative_graph_node_inspector_plugin.gd").new() as NarrativeGraphNodeInspectorPlugin
+	add_inspector_plugin(narrative_graph_node_editor_plugin)
 
 func _exit_tree():
 	if narrative_graph_edit:
 		remove_control_from_bottom_panel(narrative_graph_edit)
 
 func _handles(object):
-	return object is NarrativeGraph
+	return object is NarrativeGraph || object is NarrativeGraphNode
 	
 func _edit(object: Object) -> void:
-	if object is not NarrativeGraph:
+	if object is not NarrativeGraph && object is not NarrativeGraphNode:
 		return
 		
-	narrative_graph_edit.set_narrative_graph(object as NarrativeGraph)
+	if object is NarrativeGraph:
+		narrative_graph_edit.set_narrative_graph(object as NarrativeGraph)
 	
 	make_bottom_panel_item_visible(narrative_graph_edit)
 

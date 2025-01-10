@@ -19,6 +19,8 @@ var selected_nodes: Array[Node] = []
 @onready var arrange_nodes_button: Button = %ArrangeNodesButton
 @onready var graph_edit: GraphEdit = %GraphEdit
 
+var _current_resource_data_changed_connections: Dictionary = {}
+
 func _ready():
 	graph_edit.show_arrange_button = false
 	
@@ -47,8 +49,12 @@ func set_narrative_graph(new_graph: NarrativeGraph) -> void:
 	
 	graph = new_graph
 
+func _on_resource_data_changed(key: String, value, _name: String) -> void:
+	(graph_nodes[_name] as NarrativeGraphNodeControl).get_label_with_name(key).text = str(value)
+
 func setup_graph_edit(target_graph: NarrativeGraph) -> void:
 	graph_edit.clear_connections()
+	selected_nodes.clear()
 	
 	for node in graph_nodes:
 		graph_nodes.get(node).queue_free()
@@ -56,13 +62,20 @@ func setup_graph_edit(target_graph: NarrativeGraph) -> void:
 	graph_nodes.clear()
 	
 	for node_key in target_graph.nodes.keys():
-		var is_dialogue_node: bool = target_graph.get_node(node_key) is NarrativeGraphDialogueNode
+		var resource: NarrativeGraphNode = target_graph.get_node(node_key)
+		var is_dialogue_node: bool = resource is NarrativeGraphDialogueNode
 		var node: NarrativeGraphNodeControl = SCENE_DIALOGUE_NODE.instantiate() if is_dialogue_node else SCENE_REQUISITE_NODE.instantiate()
 		node.name = node_key
 		node.title = node.title + node_key
-		node.position_offset = target_graph.get_node(node_key).position
-		graph_nodes[node_key] = node
+		node.position_offset = resource.position
+		node.ready.connect(func():
+			for label: Label in node.paramenter_labels:
+				if label:
+					label.text = str(resource.get(label.name.to_lower()))
+		, CONNECT_ONE_SHOT)
 		graph_edit.add_child(node)
+		
+		graph_nodes[node_key] = node
 	
 	for node_key in target_graph.nodes.keys():
 		var requirements: = target_graph.get_node(node_key).requires
@@ -71,25 +84,35 @@ func setup_graph_edit(target_graph: NarrativeGraph) -> void:
 
 func _on_node_selected(node: Node) -> void:
 	selected_nodes.append(node)
+	get_tree().create_timer(.1).timeout.connect(func():
+		EditorInterface.edit_resource(graph.get_node(node.name))
+	, CONNECT_ONE_SHOT)
 
 func _on_node_deselected(node: Node) -> void:
 	selected_nodes.erase(node)
 
-func disconnect_from_graph(new_graph: NarrativeGraph) -> void:
-	if new_graph:
-		new_graph.connection_added.disconnect(_on_graph_connection_added)
-		new_graph.connection_removed.disconnect(_on_graph_connection_removed)
-		new_graph.node_added.disconnect(_on_graph_node_added)
-		new_graph.node_removed.disconnect(_on_graph_node_removed)
-		new_graph.node_moved.disconnect(_on_graph_node_moved)
+func disconnect_from_graph(_graph: NarrativeGraph) -> void:
+	if _graph:
+		_graph.connection_added.disconnect(_on_graph_connection_added)
+		_graph.connection_removed.disconnect(_on_graph_connection_removed)
+		_graph.node_added.disconnect(_on_graph_node_added)
+		_graph.node_removed.disconnect(_on_graph_node_removed)
+		_graph.node_moved.disconnect(_on_graph_node_moved)
+		for node_key in _graph.nodes:
+			_graph.get_node(node_key).data_changed.disconnect(_current_resource_data_changed_connections[node_key])
+		
 
-func connect_to_graph(new_graph: NarrativeGraph) -> void:
-	if new_graph:
-		new_graph.connection_added.connect(_on_graph_connection_added)
-		new_graph.connection_removed.connect(_on_graph_connection_removed)
-		new_graph.node_added.connect(_on_graph_node_added)
-		new_graph.node_removed.connect(_on_graph_node_removed)
-		new_graph.node_moved.connect(_on_graph_node_moved)
+func connect_to_graph(_graph: NarrativeGraph) -> void:
+	if _graph:
+		_graph.connection_added.connect(_on_graph_connection_added)
+		_graph.connection_removed.connect(_on_graph_connection_removed)
+		_graph.node_added.connect(_on_graph_node_added)
+		_graph.node_removed.connect(_on_graph_node_removed)
+		_graph.node_moved.connect(_on_graph_node_moved)
+		for node_key in _graph.nodes:
+			var callable = _on_resource_data_changed.bind(node_key)
+			_current_resource_data_changed_connections[node_key] = callable
+			_graph.get_node(node_key).data_changed.connect(callable)
 
 func _on_graph_connection_added(from: String, to: String) -> void:
 	graph_edit.connect_node(from, 0, to, 0)

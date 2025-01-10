@@ -7,28 +7,32 @@
 
 [sub_resource type="Resource" id="Resource_dcxtt"]
 script = ExtResource("3_iu6uv")
-name = ""
+priority = 3
+name = "introduction"
 position = Vector2(80, -80)
 requires = Array[String]([])
 opens = Array[String](["1", "2"])
 
 [sub_resource type="Resource" id="Resource_cfqvc"]
 script = ExtResource("3_iu6uv")
-name = ""
-position = Vector2(380, 0)
+priority = 0
+name = "about_furnace"
+position = Vector2(360, 120)
 requires = Array[String](["3", "0"])
 opens = Array[String]([])
 
 [sub_resource type="Resource" id="Resource_51vk4"]
 script = ExtResource("3_iu6uv")
-name = ""
-position = Vector2(280, -80)
+priority = 0
+name = "about_area"
+position = Vector2(360, -80)
 requires = Array[String](["0"])
 opens = Array[String]([])
 
 [sub_resource type="Resource" id="Resource_rets5"]
 script = ExtResource("4_q56is")
-position = Vector2(80, 0)
+name = "has_opened_door"
+position = Vector2(80, 140)
 requires = Array[String]([])
 opens = Array[String](["1"])
 
@@ -43,20 +47,23 @@ nodes = {
 
 [sub_resource type="Resource" id="Resource_s78mq"]
 script = ExtResource("3_iu6uv")
-name = ""
+priority = 6
+name = "introduce_area"
 position = Vector2(-40, -140)
 requires = Array[String]([])
 opens = Array[String](["1"])
 
 [sub_resource type="Resource" id="Resource_3r62e"]
 script = ExtResource("3_iu6uv")
-name = ""
+priority = 3
+name = "lead_to_basement"
 position = Vector2(160, -140)
 requires = Array[String](["2", "0"])
 opens = Array[String]([])
 
 [sub_resource type="Resource" id="Resource_exgg5"]
 script = ExtResource("4_q56is")
+name = "got_caught"
 position = Vector2(-40, 0)
 requires = Array[String]([])
 opens = Array[String](["1"])

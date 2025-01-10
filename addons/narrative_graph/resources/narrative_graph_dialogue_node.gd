@@ -1,4 +1,7 @@
 @tool
 class_name NarrativeGraphDialogueNode extends NarrativeGraphNode
 
-@export var name: String
+@export var priority: int:
+	set(value):
+		priority = value
+		data_changed.emit('priority', value)
