@@ -81,7 +81,18 @@ nodes = {
 [node name="NarrativePlayer" type="Node" parent="."]
 script = ExtResource("1_6aii4")
 graph = SubResource("Resource_r4iiy")
+state = {
+"0": false,
+"1": false,
+"2": false,
+"3": false
+}
 
 [node name="NarrativePlayer2" type="Node" parent="."]
 script = ExtResource("1_6aii4")
 graph = SubResource("Resource_qe4bl")
+state = {
+"0": true,
+"1": false,
+"2": false
+}

@@ -13,6 +13,8 @@ signal connection_removed(from: String, to: String)
 
 var _counter: int = 0
 
+signal nodes_changed
+
 func get_node(name: String) -> NarrativeGraphNode:
 	if !nodes.has(name):
 		return null
@@ -31,6 +33,7 @@ func add_dialogue(name: String) -> void:
 		
 	nodes[name] = NarrativeGraphDialogueNode.new()
 	node_added.emit(name)
+	nodes_changed.emit()
 	
 func add_requirement(name: String) -> void:
 	if nodes.has(name):
@@ -38,6 +41,7 @@ func add_requirement(name: String) -> void:
 		
 	nodes[name] = NarrativeGraphNode.new()
 	node_added.emit(name)
+	nodes_changed.emit()
 	
 func remove_node(name: String) -> void:
 	if !nodes.has(name):
@@ -51,6 +55,7 @@ func remove_node(name: String) -> void:
 		
 	nodes.erase(name)
 	node_removed.emit(name)
+	nodes_changed.emit()
 	
 func add_connection(from: String, to: String) -> void:
 	if get_node(from).opens.has(to):
@@ -71,3 +76,9 @@ func remove_connection(from: String, to: String) -> void:
 func move_node(node: String, position: Vector2) -> void:
 	get_node(node).position = position
 	node_moved.emit(node)
+	
+func get_one_valid_dialogue(state: Dictionary) -> NarrativeGraphDialogueNode:
+	return get_node('0')
+	
+func get_all_valid_dialogues(state: Dictionary) -> NarrativeGraphDialogueNode:
+	return get_node('0')

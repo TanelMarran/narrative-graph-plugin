@@ -3,6 +3,8 @@ class_name NarrativeGraphPlugin extends EditorPlugin
 
 var narrative_graph_node_editor_plugin: NarrativeGraphNodeInspectorPlugin
 
+var narrative_player_editor_plugin: NarrativePlayerInspectorPlugin
+
 var narrative_graph_edit: NarrativeGraphEdit
 var narrative_player: NarrativePlayer
 var undo_redo: EditorUndoRedoManager
@@ -24,12 +26,21 @@ func _enter_tree():
 	narrative_graph_edit.plugin = self
 	narrative_graph_edit.undo_redo = undo_redo
 	
-	narrative_graph_node_editor_plugin = preload("res://addons/narrative_graph/inspector_plugins/narrative_graph_node_inspector_plugin.gd").new() as NarrativeGraphNodeInspectorPlugin
+	narrative_graph_node_editor_plugin = NarrativeGraphNodeInspectorPlugin.new()
 	add_inspector_plugin(narrative_graph_node_editor_plugin)
+	
+	narrative_player_editor_plugin = NarrativePlayerInspectorPlugin.new()
+	add_inspector_plugin(narrative_player_editor_plugin)
 
 func _exit_tree():
 	if narrative_graph_edit:
 		remove_control_from_bottom_panel(narrative_graph_edit)
+		
+	if narrative_graph_node_editor_plugin:
+		remove_inspector_plugin(narrative_graph_node_editor_plugin)
+		
+	if narrative_player_editor_plugin:
+		remove_inspector_plugin(narrative_player_editor_plugin)
 
 func _handles(object):
 	return object is NarrativeGraph || object is NarrativeGraphNode
