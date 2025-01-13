@@ -11,6 +11,14 @@ grow_vertical = 2
 label = "State"
 script = ExtResource("1_68owq")
 
-[node name="EditorContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TestButton" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Print valid dialogues"
+
+[node name="EditorContainer" type="VBoxContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2

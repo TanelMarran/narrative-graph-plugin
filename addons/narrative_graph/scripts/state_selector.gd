@@ -4,9 +4,11 @@ class_name StateSelector extends EditorProperty
 var item_scene: PackedScene = preload("res://addons/narrative_graph/scenes/state_selector_item.tscn")
 
 @onready var editor_container = %EditorContainer
+@onready var test_button = %TestButton
 
 func _ready() -> void:
-	set_bottom_editor(editor_container)
+	set_bottom_editor(get_child(0))
+	test_button.pressed.connect(print_valid_dialouges)
 		
 func _update_editor() -> void:
 	var object: NarrativePlayer = get_edited_object()
@@ -26,3 +28,8 @@ func _update_editor() -> void:
 
 func _update_property() -> void:
 	_update_editor()
+
+func print_valid_dialouges() -> void:
+	var object: NarrativePlayer = get_edited_object()
+	var valid_nodes = object.graph.get_all_valid_dialogues(object.state)
+	print(valid_nodes)
