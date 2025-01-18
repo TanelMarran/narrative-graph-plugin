@@ -44,6 +44,5 @@ func _update_property() -> void:
 func update_valid_dialouges() -> void:
 	var object: NarrativePlayer = get_edited_object()
 	var valid_nodes = object.graph.get_all_valid_dialogues(object.state).map(func(element): return element.name)
-	print(valid_nodes)
 	for node_key in _nodes:
 		_nodes[node_key].is_next = node_key in valid_nodes

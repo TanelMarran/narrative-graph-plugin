@@ -14,6 +14,8 @@ signal connection_removed(from: String, to: String)
 
 var _counter: int = 0
 
+var _selection_counter: int = 0
+
 signal nodes_changed
 
 func get_node(name: String) -> NarrativeGraphNode:
@@ -99,8 +101,22 @@ func update_flat_requirements(keys_to_check: Array[String], moving_up: bool = fa
 			_flat_requirements[key][require_key] = null
 		update_flat_requirements(node.opens)
 	
-func get_one_valid_dialogue(state: Dictionary) -> NarrativeGraphDialogueNode:	
-	return get_node('0')
+func get_one_valid_dialogue(state: Dictionary) -> NarrativeGraphDialogueNode:
+	var all_valid: Array[NarrativeGraphDialogueNode] = get_all_valid_dialogues(state)
+	var current_priority: int = -INF
+	var highest_priority_nodes: Array[NarrativeGraphDialogueNode] = []
+	_selection_counter += 1
+	
+	for resource in all_valid:
+		if resource.priority < current_priority:
+			continue
+		
+		if resource.priority > current_priority:
+			highest_priority_nodes = []
+			current_priority = resource.priority
+		highest_priority_nodes.append(resource)
+	
+	return highest_priority_nodes[_selection_counter % highest_priority_nodes.size()]
 	
 func get_all_valid_dialogues(state: Dictionary) -> Array[NarrativeGraphDialogueNode]:
 	var true_values: Dictionary = {}

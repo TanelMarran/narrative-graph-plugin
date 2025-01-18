@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://mbnoea3p2utp"]
+[gd_scene load_steps=15 format=3 uid="uid://mbnoea3p2utp"]
 
 [ext_resource type="Script" path="res://addons/narrative_graph/narrative_player.gd" id="1_6aii4"]
 [ext_resource type="Script" path="res://addons/narrative_graph/resources/narrative_graph.gd" id="2_4xicp"]
@@ -10,7 +10,7 @@ script = ExtResource("3_iu6uv")
 repeat = false
 priority = 3
 name = "introduction"
-position = Vector2(80, -80)
+position = Vector2(-120, 40)
 requires = Array[String]([])
 opens = Array[String](["1", "2"])
 
@@ -29,7 +29,7 @@ repeat = false
 priority = 0
 name = "about_area"
 position = Vector2(360, -80)
-requires = Array[String](["0"])
+requires = Array[String](["0", "4"])
 opens = Array[String]([])
 
 [sub_resource type="Resource" id="Resource_rets5"]
@@ -39,13 +39,23 @@ position = Vector2(80, 140)
 requires = Array[String]([])
 opens = Array[String](["1"])
 
+[sub_resource type="Resource" id="Resource_v0lhc"]
+script = ExtResource("3_iu6uv")
+repeat = false
+priority = 3
+name = "alt_introduction"
+position = Vector2(-140, -120)
+requires = Array[String]([])
+opens = Array[String](["2"])
+
 [sub_resource type="Resource" id="Resource_r4iiy"]
 script = ExtResource("2_4xicp")
 nodes = {
 "0": SubResource("Resource_dcxtt"),
 "1": SubResource("Resource_cfqvc"),
 "2": SubResource("Resource_51vk4"),
-"3": SubResource("Resource_rets5")
+"3": SubResource("Resource_rets5"),
+"4": SubResource("Resource_v0lhc")
 }
 _flat_requirements = {
 "0": {},
@@ -54,7 +64,8 @@ _flat_requirements = {
 "3": null
 },
 "2": {
-"0": null
+"0": null,
+"4": null
 },
 "3": {}
 }
@@ -109,7 +120,8 @@ state = {
 "0": false,
 "1": false,
 "2": false,
-"3": false
+"3": false,
+"4": false
 }
 
 [node name="NarrativePlayer2" type="Node" parent="."]
