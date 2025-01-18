@@ -1,9 +1,31 @@
-[gd_scene load_steps=2 format=3 uid="uid://cr87wlobwtpjs"]
+[gd_scene load_steps=4 format=3 uid="uid://cr87wlobwtpjs"]
 
 [ext_resource type="Script" path="res://addons/narrative_graph/scripts/state_selector_item.gd" id="1_gtxd5"]
 
+[sub_resource type="Gradient" id="Gradient_kvxlg"]
+offsets = PackedFloat32Array(0.480167, 0.507307)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_o3now"]
+gradient = SubResource("Gradient_kvxlg")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
 [node name="HBoxContainer" type="HBoxContainer"]
 script = ExtResource("1_gtxd5")
+next_color = Color(0.63193, 0.785999, 1, 1)
+default_color = Color(0.462291, 0.462291, 0.462291, 1)
+requirement_color = Color(1, 1, 1, 0)
+
+[node name="UpNext" type="TextureRect" parent="."]
+unique_name_in_owner = true
+modulate = Color(0.489622, 0.489622, 0.489622, 1)
+layout_mode = 2
+texture = SubResource("GradientTexture2D_o3now")
+expand_mode = 2
 
 [node name="Label" type="Label" parent="."]
 unique_name_in_owner = true

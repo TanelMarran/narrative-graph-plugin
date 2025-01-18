@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://buxcmq4pfvdp3"]
+[gd_scene load_steps=13 format=3 uid="uid://buxcmq4pfvdp3"]
 
 [ext_resource type="Script" path="res://addons/narrative_graph/narrative_player.gd" id="1_4f00q"]
 [ext_resource type="Script" path="res://addons/narrative_graph/resources/narrative_graph_dialogue_node.gd" id="2_krqhh"]
@@ -8,39 +8,61 @@
 [sub_resource type="Resource" id="Resource_54tjd"]
 script = ExtResource("2_krqhh")
 repeat = false
-repeat_name = ""
 priority = 0
 name = "about_world"
-position = Vector2(480, -20)
-requires = Array[String](["1"])
+position = Vector2(740, -20)
+requires = Array[String](["3", "5"])
 opens = Array[String]([])
 
 [sub_resource type="Resource" id="Resource_np15t"]
 script = ExtResource("2_krqhh")
 repeat = false
-repeat_name = ""
 priority = 0
 name = "about_me"
 position = Vector2(240, -20)
 requires = Array[String](["4", "2"])
-opens = Array[String](["0"])
+opens = Array[String](["3"])
 
 [sub_resource type="Resource" id="Resource_6xpn3"]
 script = ExtResource("2_krqhh")
-repeat = true
-repeat_name = "introduction_repeat"
+repeat = false
 priority = 0
 name = "introduction"
-position = Vector2(-40, -20)
+position = Vector2(-40, -40)
 requires = Array[String]([])
 opens = Array[String](["1"])
+
+[sub_resource type="Resource" id="Resource_vf20b"]
+script = ExtResource("2_krqhh")
+repeat = true
+priority = 0
+name = "repeat"
+position = Vector2(500, -20)
+requires = Array[String](["1"])
+opens = Array[String](["0", "6"])
 
 [sub_resource type="Resource" id="Resource_14vp8"]
 script = ExtResource("3_kbvnm")
 name = "got_fruit"
-position = Vector2(-80, 140)
+position = Vector2(-40, 140)
 requires = Array[String]([])
 opens = Array[String](["1"])
+
+[sub_resource type="Resource" id="Resource_rtux1"]
+script = ExtResource("3_kbvnm")
+name = "has_opened_door"
+position = Vector2(420, 140)
+requires = Array[String]([])
+opens = Array[String](["0"])
+
+[sub_resource type="Resource" id="Resource_3jndy"]
+script = ExtResource("2_krqhh")
+repeat = false
+priority = 0
+name = "about_furnace"
+position = Vector2(740, -160)
+requires = Array[String](["3"])
+opens = Array[String]([])
 
 [sub_resource type="Resource" id="Resource_rtqtq"]
 script = ExtResource("2_qgm0t")
@@ -48,16 +70,32 @@ nodes = {
 "0": SubResource("Resource_54tjd"),
 "1": SubResource("Resource_np15t"),
 "2": SubResource("Resource_6xpn3"),
-"4": SubResource("Resource_14vp8")
+"3": SubResource("Resource_vf20b"),
+"4": SubResource("Resource_14vp8"),
+"5": SubResource("Resource_rtux1"),
+"6": SubResource("Resource_3jndy")
 }
 _flat_requirements = {
 "0": {
 "1": null,
 "2": null,
-"4": null
+"3": null,
+"4": null,
+"5": null
 },
 "1": {
 "2": null,
+"4": null
+},
+"3": {
+"1": null,
+"2": null,
+"4": null
+},
+"6": {
+"1": null,
+"2": null,
+"3": null,
 "4": null
 }
 }
@@ -66,8 +104,11 @@ _flat_requirements = {
 script = ExtResource("1_4f00q")
 graph = SubResource("Resource_rtqtq")
 state = {
-"0": false,
-"1": false,
-"2": false,
-"4": false
+"0": true,
+"1": true,
+"2": true,
+"3": true,
+"4": true,
+"5": true,
+"6": true
 }

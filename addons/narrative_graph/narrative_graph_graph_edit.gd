@@ -121,10 +121,19 @@ func _on_graph_connection_removed(from: String, to: String) -> void:
 	graph_edit.disconnect_node(from, 0, to, 0)
 
 func _on_graph_node_added(node_key: String) -> void:
-	var is_dialogue_node: bool = graph.get_node(node_key) is NarrativeGraphDialogueNode
+	var resource = graph.get_node(node_key)
+	var is_dialogue_node: bool = resource is NarrativeGraphDialogueNode
 	var node = SCENE_DIALOGUE_NODE.instantiate() if is_dialogue_node else SCENE_REQUISITE_NODE.instantiate()
 	node.name = node_key
 	node.title = node.title + node_key
+	node.ready.connect(func():
+		for label: Label in node.paramenter_labels:
+			if label:
+				label.text = str(resource.get(label.name.to_lower()))
+	, CONNECT_ONE_SHOT)
+	var callable = _on_resource_data_changed.bind(node_key)
+	_current_resource_data_changed_connections[node_key] = callable
+	resource.data_changed.connect(callable)
 	graph_nodes[node_key] = node
 	graph_edit.add_child(node)
 

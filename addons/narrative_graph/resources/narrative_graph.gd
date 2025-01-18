@@ -81,7 +81,7 @@ func move_node(node: String, position: Vector2) -> void:
 	node_moved.emit(node)
 	
 func update_all_flat_requirements() -> void:
-	var no_requirement_node_keys = []
+	var no_requirement_node_keys: Array[String] = []
 	for key in nodes:
 		if get_node(key).requires.size() == 0:
 			no_requirement_node_keys.append(key)
@@ -102,21 +102,31 @@ func update_flat_requirements(keys_to_check: Array[String], moving_up: bool = fa
 func get_one_valid_dialogue(state: Dictionary) -> NarrativeGraphDialogueNode:	
 	return get_node('0')
 	
-func get_all_valid_dialogues(state: Dictionary) -> Array[String]:
+func get_all_valid_dialogues(state: Dictionary) -> Array[NarrativeGraphDialogueNode]:
 	var true_values: Dictionary = {}
 	for state_key in state:
 		if state[state_key]:
 			true_values[state_key] = null
 	
-	var valid_items: Array[String] = []
+	var valid_items: Array[NarrativeGraphDialogueNode] = []
+	
+	if !_flat_requirements:
+		_flat_requirements = {}
+		update_all_flat_requirements()
+	
 	for key in nodes:
 		var node = get_node(key)
 		var is_dialogue: bool = node is NarrativeGraphDialogueNode
 		if is_dialogue:
 			var has_requirements: bool = _flat_requirements.has(key)
-			var has_met_all_requirements: bool = true_values.has_all(_flat_requirements[key].keys())
+			var has_met_all_requirements: bool = true_values.has_all(_flat_requirements[key].keys() if _flat_requirements.has(key) else [])
 			var has_not_been_read: bool = key not in true_values
 			var is_repeat: bool = node.repeat
-			if (!has_requirements || has_met_all_requirements) && (has_not_been_read || is_repeat):
-				valid_items.append(node.name if has_not_been_read || !node.repeat_name else node.repeat_name)
+			var openables_followups_exist: bool = false
+			var no_followups_open: bool = false
+			if is_repeat:
+				openables_followups_exist = node.opens.any(func(open_key: String): return open_key not in true_values)
+				no_followups_open = node.opens.all(func(open_key: String): return !true_values.has_all(_flat_requirements[open_key].keys()) || open_key in true_values)
+			if (!has_requirements || has_met_all_requirements) && (has_not_been_read || (is_repeat && no_followups_open && openables_followups_exist)):
+				valid_items.append(node)
 	return valid_items

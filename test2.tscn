@@ -7,6 +7,7 @@
 
 [sub_resource type="Resource" id="Resource_dcxtt"]
 script = ExtResource("3_iu6uv")
+repeat = false
 priority = 3
 name = "introduction"
 position = Vector2(80, -80)
@@ -15,6 +16,7 @@ opens = Array[String](["1", "2"])
 
 [sub_resource type="Resource" id="Resource_cfqvc"]
 script = ExtResource("3_iu6uv")
+repeat = false
 priority = 0
 name = "about_furnace"
 position = Vector2(360, 120)
@@ -23,6 +25,7 @@ opens = Array[String]([])
 
 [sub_resource type="Resource" id="Resource_51vk4"]
 script = ExtResource("3_iu6uv")
+repeat = false
 priority = 0
 name = "about_area"
 position = Vector2(360, -80)
@@ -44,9 +47,21 @@ nodes = {
 "2": SubResource("Resource_51vk4"),
 "3": SubResource("Resource_rets5")
 }
+_flat_requirements = {
+"0": {},
+"1": {
+"0": null,
+"3": null
+},
+"2": {
+"0": null
+},
+"3": {}
+}
 
 [sub_resource type="Resource" id="Resource_s78mq"]
 script = ExtResource("3_iu6uv")
+repeat = false
 priority = 6
 name = "introduce_area"
 position = Vector2(-40, -140)
@@ -55,6 +70,7 @@ opens = Array[String](["1"])
 
 [sub_resource type="Resource" id="Resource_3r62e"]
 script = ExtResource("3_iu6uv")
+repeat = false
 priority = 3
 name = "lead_to_basement"
 position = Vector2(160, -140)
@@ -75,6 +91,14 @@ nodes = {
 "1": SubResource("Resource_3r62e"),
 "2": SubResource("Resource_exgg5")
 }
+_flat_requirements = {
+"0": {},
+"1": {
+"0": null,
+"2": null
+},
+"2": {}
+}
 
 [node name="Test2" type="Node2D"]
 
@@ -92,7 +116,7 @@ state = {
 script = ExtResource("1_6aii4")
 graph = SubResource("Resource_qe4bl")
 state = {
-"0": true,
+"0": false,
 "1": false,
 "2": false
 }
