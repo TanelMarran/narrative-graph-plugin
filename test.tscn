@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://buxcmq4pfvdp3"]
+[gd_scene load_steps=17 format=3 uid="uid://buxcmq4pfvdp3"]
 
 [ext_resource type="Script" path="res://addons/narrative_graph/narrative_player.gd" id="1_4f00q"]
 [ext_resource type="Script" path="res://addons/narrative_graph/resources/narrative_graph_dialogue_node.gd" id="2_krqhh"]
@@ -10,7 +10,7 @@ script = ExtResource("2_krqhh")
 repeat = false
 priority = 0
 name = "about_world"
-position = Vector2(740, -20)
+position = Vector2(920, 0)
 requires = Array[String](["3", "5"])
 opens = Array[String]([])
 
@@ -37,7 +37,7 @@ script = ExtResource("2_krqhh")
 repeat = true
 priority = 0
 name = "repeat"
-position = Vector2(500, -20)
+position = Vector2(560, -100)
 requires = Array[String](["1"])
 opens = Array[String](["0", "6"])
 
@@ -60,7 +60,7 @@ script = ExtResource("2_krqhh")
 repeat = false
 priority = 0
 name = "about_furnace"
-position = Vector2(740, -160)
+position = Vector2(800, -160)
 requires = Array[String](["3"])
 opens = Array[String]([])
 
@@ -100,6 +100,46 @@ _flat_requirements = {
 }
 }
 
+[sub_resource type="Resource" id="Resource_cxrea"]
+script = ExtResource("2_krqhh")
+repeat = false
+priority = 0
+name = "test"
+position = Vector2(-40, -40)
+requires = Array[String]([])
+opens = Array[String](["1"])
+
+[sub_resource type="Resource" id="Resource_bnooq"]
+script = ExtResource("2_krqhh")
+repeat = false
+priority = 0
+name = "test2"
+position = Vector2(140, -20)
+requires = Array[String](["0", "2"])
+opens = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_8pttw"]
+script = ExtResource("3_kbvnm")
+name = "test3"
+position = Vector2(-100, 80)
+requires = Array[String]([])
+opens = Array[String](["1"])
+
+[sub_resource type="Resource" id="Resource_25syo"]
+script = ExtResource("2_qgm0t")
+nodes = {
+"0": SubResource("Resource_cxrea"),
+"1": SubResource("Resource_bnooq"),
+"2": SubResource("Resource_8pttw")
+}
+_flat_requirements = {
+"0": {},
+"1": {
+"0": null,
+"2": null
+}
+}
+
 [node name="Test" type="Node"]
 script = ExtResource("1_4f00q")
 graph = SubResource("Resource_rtqtq")
@@ -111,4 +151,13 @@ state = {
 "4": false,
 "5": false,
 "6": false
+}
+
+[node name="NarrativePlayer" type="Node" parent="."]
+script = ExtResource("1_4f00q")
+graph = SubResource("Resource_25syo")
+state = {
+"0": false,
+"1": false,
+"2": false
 }

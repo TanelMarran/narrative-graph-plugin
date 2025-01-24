@@ -14,12 +14,17 @@ var graph_nodes: Dictionary = {}
 
 var selected_nodes: Array[Node] = []
 
+var _is_dragging: bool = false
+var _drag_amount: Vector2 = Vector2.ZERO
+
 @onready var add_dialogue_button: Button = %AddDialogueButton
 @onready var add_requirement_button: Button = %AddRequirementButton
 @onready var arrange_nodes_button: Button = %ArrangeNodesButton
 @onready var graph_edit: GraphEdit = %GraphEdit
 
 var _current_resource_data_changed_connections: Dictionary = {}
+
+signal drag_released()
 
 func _ready():
 	graph_edit.show_arrange_button = false
@@ -28,6 +33,7 @@ func _ready():
 	
 	graph_edit.end_node_move.connect(_on_end_node_move)
 	
+	graph_edit.gui_input.connect(_on_gui_input)
 	graph_edit.connection_request.connect(_on_connection_request)
 	graph_edit.disconnection_request.connect(_on_disconnection_request)
 	
@@ -48,6 +54,23 @@ func set_narrative_graph(new_graph: NarrativeGraph) -> void:
 		setup_graph_edit(new_graph)
 	
 	graph = new_graph
+
+func _on_gui_input(event: InputEvent) -> void:
+	var mouse_event_button: InputEventMouseButton = event as InputEventMouseButton
+	if mouse_event_button:
+		if mouse_event_button.button_index == MOUSE_BUTTON_LEFT:
+			if mouse_event_button.is_pressed():
+				_is_dragging = true
+			elif mouse_event_button.is_released():
+				_is_dragging = false
+				drag_released.emit()
+	else:
+		var mouse_event_motion: InputEventMouseMotion = event as InputEventMouseMotion
+		if mouse_event_motion:
+			if _is_dragging:
+				_drag_amount += mouse_event_motion.velocity
+			else:
+				_drag_amount = Vector2.ZERO
 
 func _on_resource_data_changed(key: String, value, _name: String) -> void:
 	(graph_nodes[_name] as NarrativeGraphNodeControl).get_label_with_name(key).text = str(value)
@@ -84,9 +107,9 @@ func setup_graph_edit(target_graph: NarrativeGraph) -> void:
 
 func _on_node_selected(node: Node) -> void:
 	selected_nodes.append(node)
-	get_tree().create_timer(.1).timeout.connect(func():
+	if _drag_amount.length() < 100:
+		await drag_released
 		EditorInterface.edit_resource(graph.get_node(node.name))
-	, CONNECT_ONE_SHOT)
 
 func _on_node_deselected(node: Node) -> void:
 	selected_nodes.erase(node)

@@ -19,24 +19,25 @@ func _update_editor() -> void:
 		child.queue_free()
 	
 	_nodes.clear()
-	for node_key in object.graph.nodes:
-		var item: StateSelectorItem = item_scene.instantiate()
-		var resource = object.graph.get_node(node_key)
-		item.label = resource.name
-		item.is_checked = object.state[node_key]
-		item.ready.connect(func():
-			item.is_requirement = resource is not NarrativeGraphDialogueNode
-		, CONNECT_ONE_SHOT)
-		_nodes[resource.name] = item
-		item.toggled.connect(func(is_toggled: bool):
-			object.state[node_key] = is_toggled
-			emit_changed('state', is_toggled)
-		)
-		editor_container.add_child(item)
-		if item.is_requirement:
-			editor_container.move_child(item, 0)
-	
-	update_valid_dialouges()
+	if object.graph:
+		for node_key in object.graph.nodes:
+			var item: StateSelectorItem = item_scene.instantiate()
+			var resource = object.graph.get_node(node_key)
+			item.label = resource.name
+			item.is_checked = object.state[node_key]
+			item.ready.connect(func():
+				item.is_requirement = resource is not NarrativeGraphDialogueNode
+			, CONNECT_ONE_SHOT)
+			_nodes[resource.name] = item
+			item.toggled.connect(func(is_toggled: bool):
+				object.state[node_key] = is_toggled
+				emit_changed('state', is_toggled)
+			)
+			editor_container.add_child(item)
+			if item.is_requirement:
+				editor_container.move_child(item, 0)
+		
+		update_valid_dialouges()
 
 func _update_property() -> void:
 	_update_editor()
